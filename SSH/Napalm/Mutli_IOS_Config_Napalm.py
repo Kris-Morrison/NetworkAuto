@@ -1,6 +1,9 @@
 from napalm import get_network_driver
 import json
 
+
+# This script will carry out data retrieval from multiple devices on the network via SSH using napalm.
+# 03/05/2022 written by Kris Morrison
 # Parameters
 IP_ADDRESSES = ["192.168.2.1", "192.168.2.2"]
 USERNAME = "kris"
@@ -18,7 +21,7 @@ for IP in IP_ADDRESSES:
     data = ios.get_facts()
     print(json.dumps(data, indent=4))
     print("----------------------------------------------------")
-    #get BGP information
+    # get BGP information
     data2 = ios.get_bgp_neighbors()
     print("----------------------------------------------------")
     print(json.dumps(data2, indent=4))
