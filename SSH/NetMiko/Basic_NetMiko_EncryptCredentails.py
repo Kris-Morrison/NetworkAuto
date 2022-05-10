@@ -2,8 +2,12 @@ from netmiko import ConnectHandler, NetMikoTimeoutException, NetmikoAuthenticati
 import csv
 from paramiko.ssh_exception import SSHException
 import os
-
 from Encryption import Encrpytor
+
+# This script is using netmiko with SSH to connect to device and enter commands
+# This will retrieve the commands from a file in the same dir that can be encrypted or decrypted with base64
+# called - command_file and IP - device_list
+# Written by Kris Morrison
 
 key = Encrpytor()
 option = ""
@@ -12,9 +16,6 @@ while option != "end":
     option = input("Do you require to encrypt the files? Would you like to run the scripts? or end? (yes, script, "
                    "end)\n")
     option.lower()
-    # This script is using netmiko with SSH to connect to device and enter commands
-    # This will retrieve the commands from a file in the same dir, called - command_file and IP - device_list
-    # Written by Kris Morrison
 
     if option == "yes":
         # encrypt my file

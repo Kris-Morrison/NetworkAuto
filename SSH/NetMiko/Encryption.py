@@ -1,6 +1,7 @@
 from cryptography.fernet import Fernet
 import os
 
+#Written by Kris Morrison
 
 class Encrpytor():
 
