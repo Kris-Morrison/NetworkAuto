@@ -13,13 +13,13 @@ username = input("What is the username? \n")
 password = getpass.getpass()
 
 # Retrieving the device commands
-with open("command_file.txt") as f:
+with open("Encrypted Scripts/command_file.txt") as f:
     commands = f.read().splitlines()
 
 print(commands)
 
 # Retrieving the device IP addresses
-with open("device_list.txt") as f:
+with open("Encrypted Scripts/device_list.txt") as f:
     ip_lists = f.read().splitlines()
 
 # Device parameters
@@ -56,14 +56,3 @@ for IP in ip_lists:
         command = ssh.send_command(line)
         print(command)
 
-    # # Check software versions
-    # for software_ver in list_versions:
-    #     print ('Checking for ' + software_ver)
-    #     output_version = net_connect.send_command('show version')
-    #     int_version = 0 # Reset integer value
-    #     int_version = output_version.find(software_ver) # Check software version
-    #     if int_version > 0:
-    #         print ('Software version found: ' + software_ver)
-    #         break
-    #     else:
-    #         print ('Did not find ' + software_ver)
