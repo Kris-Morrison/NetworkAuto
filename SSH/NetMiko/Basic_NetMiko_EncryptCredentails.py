@@ -5,8 +5,7 @@ from paramiko.ssh_exception import SSHException
 import os
 from Encryption import Encrpytor
 import threading
-from threading import *
-screen_lock = Semaphore(value=1)
+
 
 class bcolors:
     HEADER = '\033[95m'
@@ -31,12 +30,14 @@ option = ""
 device_list = []
 progress = "no"
 config_threads_list = []
+device_output = {}
+command_output = {}
 output = []
-
+device = 0
 
 
 # =======================================================================================================
-def config_worker(ip, user, password):
+def config_worker( ip, user, password):
     cisco_switch = {"device_type": "cisco_ios", "host": ip, "username": user, "password": password}
     # Error handling
     try:
@@ -53,13 +54,9 @@ def config_worker(ip, user, password):
     except Exception as unknown_error:
         print('Some other error: ' + str(unknown_error))
     # Sends the commands to the device
+
     for line in commands:
-        output = connect.send_command(line)
-        screen_lock.acquire()
-        print(bcolors.OKCYAN + f"******************************Information from {ip}*************************************")
-        print(output)
-        print("**************************************************************************************")
-        screen_lock.release()
+        command_output[str(ip) + str(line)] = connect.send_command(line)
 
 
 
@@ -104,11 +101,22 @@ while option != "end":
                 IP = host[0]
                 USER = host[1]
                 PASS = host[2]
+                device += 1
 
                 print('Creating thread for: ', IP)
                 config_threads_list.append(threading.Thread(target=config_worker, args=(IP, USER, PASS)))
+
             for config_thread in config_threads_list:
                 config_thread.start()
 
             for config_thread in config_threads_list:
                 config_thread.join()
+
+            for host in device_list:
+                ip = host[0]
+                print(f"================================DEVICE / {ip}===================================")
+                for line in commands:
+                    print(f"Information for the commands '{line}' :-")
+                    print(command_output[str(ip) + str(line)])
+                    print("------------------------------------------------------------------------")
+                print("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++")
